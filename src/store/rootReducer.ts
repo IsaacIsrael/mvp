@@ -1,24 +1,22 @@
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
 import { combineReducers } from 'redux';
-import { resettableReducer } from 'reduxsauce';
 import { persistReducer } from 'redux-persist';
 
-import appReducer, { Types as AppTypes, State as AppState } from './ducker/app';
+import movieReducer, { Types as MovieTypes, State as MovieState } from './ducker/movie';
 
 export type RootState = {
-  app: AppState;
+  movie: MovieState;
 };
 
-const resettable = resettableReducer(AppTypes.RESET_STORE);
 
 const rootReducer = combineReducers({
-  app: resettable(appReducer),
+  movie: movieReducer,
 });
 
 const persistConfig = {
   key: 'LIFTED_REDUX_STORE',
   storage: AsyncStorageLib,
-  whitelist: [],
+  whitelist: ['movie'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

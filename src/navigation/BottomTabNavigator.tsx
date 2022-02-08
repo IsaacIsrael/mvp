@@ -1,59 +1,47 @@
+import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
+import { Color } from '../helper/Color';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types/types';
-import LinkingConfiguration from './LinkingConfiguration';
+import TabOneScreen from '../screens/FavoriteTab';
+import TabTwoScreen from '../screens/BlacklistTab';
+import { FontAwesomeName } from '../types/Icon';
+import {  RootTabParamList, RootTabScreenProps } from '../types/Navigation';
 
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-  
 
-type FontAwesomeName= React.ComponentProps<typeof FontAwesome>['name'];
 
  const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
  const BottomTabNavigator: React.FC = () => {
-   const colorScheme = useColorScheme();
-
 
     const renderIcon  = (props: {name: FontAwesomeName; color: string;})  =>(
-        <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />)
+      <FontAwesome size={20} style={{ marginBottom: -3 }} {...props} />)
     ;
  
    return (
      <BottomTab.Navigator
-       initialRouteName="TabOne"
+       initialRouteName="FavoriteTab"
        screenOptions={{
-         tabBarActiveTintColor: Colors[colorScheme].tint,
+         tabBarActiveTintColor: Color.WHITE,
        }}
      >
        <BottomTab.Screen
-         name="TabOne"
+         name="FavoriteTab"
          component={TabOneScreen}
-         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-           title: 'Tab One',
-           tabBarIcon: ({ color }) => renderIcon({ name:"code", color}),
+         options={({ navigation }: RootTabScreenProps<'FavoriteTab'>) => ({
+           title: 'Favorite',
+           tabBarIcon: ({ color }) => renderIcon({ name:"heart", color}),
            headerRight: () => (
              <Pressable
-               onPress={() => navigation.navigate('Modal')}
+               onPress={() => navigation.navigate('SearchMovie')}
                style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
              >
                <FontAwesome
-                 name="info-circle"
-                 size={25}
-                 color={Colors[colorScheme].text}
+                 name="search"
+                 size={20}
+                 color={Color.WHITE}
                  style={{ marginRight: 15 }}
                />
              </Pressable>
@@ -61,12 +49,25 @@ type FontAwesomeName= React.ComponentProps<typeof FontAwesome>['name'];
          })}
        />
        <BottomTab.Screen
-         name="TabTwo"
+         name="BlacklistTab"
          component={TabTwoScreen}
-         options={{
-           title: 'Tab Two',
-           tabBarIcon: ({ color }) => renderIcon({ name:"code", color}),
-         }}
+         options={({ navigation }: RootTabScreenProps<'BlacklistTab'>) => ({
+            title: 'Blacklist',
+            tabBarIcon: ({ color }) => renderIcon({ name:"ban", color}),
+            headerRight: () => (
+              <Pressable
+                onPress={() => navigation.navigate('SearchMovie')}
+                style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+              >
+                <FontAwesome
+                  name="search"
+                  size={20}
+                  color={Color.WHITE}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ),
+        })}
        />
      </BottomTab.Navigator>
    );
